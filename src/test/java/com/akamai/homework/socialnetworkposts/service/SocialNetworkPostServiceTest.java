@@ -49,19 +49,19 @@ class SocialNetworkPostServiceTest {
 	@Test
 	@Order(3)
 	public void updatePost_whenTargetAndRequestBody_AreSameReference() {
-		
+
 		SocialNetworkPost targePost = getNewPost();
-		
-		SocialNetworkPost postInRequestBody = getPostFromExistingReference(targePost);	
-		
+
+		SocialNetworkPost postInRequestBody = getPostFromExistingReference(targePost);
+
 		postInRequestBody.setContent(UPDATED_CONTENT);
 		postInRequestBody.setAuthor("Black");
-		postInRequestBody.setViewCount(4789);	
-		
-		long targetPostId = targePost.getId();		
-		
+		postInRequestBody.setViewCount(4789);
+
+		long targetPostId = targePost.getId();
+
 		SocialNetworkPost updatedPost = service.updatePost(targetPostId, postInRequestBody);
-		
+
 		Assertions.assertEquals(targePost.getId(), updatedPost.getId());
 		Assertions.assertEquals(postInRequestBody.getId(), updatedPost.getId());
 		Assertions.assertEquals(postInRequestBody.getContent(), updatedPost.getContent());
@@ -72,19 +72,19 @@ class SocialNetworkPostServiceTest {
 	@Test
 	@Order(4)
 	public void updatePost_whenTargetAndRequestBody_AreNotSameReference_thenUpdateTarget() {
-		
+
 		SocialNetworkPost postInRequestBody = getNewPost();
-		
+
 		postInRequestBody.setContent(UPDATED_CONTENT);
 		postInRequestBody.setAuthor("Black");
 		postInRequestBody.setViewCount(4789);
-		
-		SocialNetworkPost targePost = getNewPost();	
-	
+
+		SocialNetworkPost targePost = getNewPost();
+
 		long targetPostId = targePost.getId();
-		
+
 		SocialNetworkPost updatedPost = service.updatePost(targetPostId, postInRequestBody);
-		
+
 		Assertions.assertEquals(targePost.getId(), updatedPost.getId());
 		Assertions.assertNotEquals(postInRequestBody.getId(), updatedPost.getId());
 		Assertions.assertEquals(postInRequestBody.getContent(), updatedPost.getContent());
@@ -95,13 +95,13 @@ class SocialNetworkPostServiceTest {
 	@Test
 	@Order(5)
 	public void updatePost_whenTargetPostDoesNotExist_thenCreatePost() {
-		
+
 		SocialNetworkPost postInRequestBody = getNewPost();
 
 		long targetPostId = NON_EXISTENT_POST_ID;
-		
+
 		SocialNetworkPost createdPost = service.updatePost(targetPostId, postInRequestBody.clone());
-		
+
 		Assertions.assertNotEquals(NON_EXISTENT_POST_ID, createdPost.getId());
 		Assertions.assertNotEquals(postInRequestBody.getId(), createdPost.getId());
 		Assertions.assertEquals(postInRequestBody.getAuthor(), createdPost.getAuthor());
@@ -126,7 +126,8 @@ class SocialNetworkPostServiceTest {
 
 		SocialNetworkPost postWithNoAuthorAndContent = createSocialNetworkPostInstanceWithoutAuthorAndContent();
 
-		Assertions.assertThrows(InvalidPostException.class, () -> service.updatePost(POST_ID_USED_FOR_SEARCH, postWithNoAuthorAndContent));
+		Assertions.assertThrows(InvalidPostException.class,
+				() -> service.updatePost(POST_ID_USED_FOR_SEARCH, postWithNoAuthorAndContent));
 	}
 
 	@Test
@@ -143,7 +144,8 @@ class SocialNetworkPostServiceTest {
 
 		SocialNetworkPost nullObject = null;
 
-		Assertions.assertThrows(InvalidPostException.class, () -> service.updatePost(POST_ID_USED_FOR_SEARCH, nullObject));
+		Assertions.assertThrows(InvalidPostException.class,
+				() -> service.updatePost(POST_ID_USED_FOR_SEARCH, nullObject));
 	}
 
 	@Test
@@ -182,12 +184,12 @@ class SocialNetworkPostServiceTest {
 	}
 
 	private SocialNetworkPost getPostFromExistingReference(SocialNetworkPost socialNetworkPost) {
-		
+
 		return socialNetworkPost.clone();
 	}
 
 	private SocialNetworkPost getNewPost() {
-		
+
 		return service.createPost(createSocialNetworkPostInstance()).clone();
 	}
 
